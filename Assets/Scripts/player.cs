@@ -29,6 +29,13 @@ public class player : MonoBehaviour
     public float speedIncreaseAmount = 0.2f;
     public float maxSpeedMultiplier = 2f;
 
+    [Header("Sound Effects")]
+    public AudioSource audioSource;
+    public AudioClip buttonClickSound;
+    public AudioClip hitSound;
+    public AudioClip gameOverSound;
+    public AudioClip victorySound;
+
     private CharacterController controller;
     private Renderer[] playerRenderers;
 
@@ -41,6 +48,22 @@ public class player : MonoBehaviour
     private bool isGameOver = false;
     private bool isClear = false;
 
+    // ëª¨ë°”ì¼ ë²„íŠ¼ ì…ë ¥ ìƒíƒœ
+    private bool mobileUp;
+    private bool mobileDown;
+    private bool mobileLeft;
+    private bool mobileRight;
+
+    // ì €ì¥ ë°ì´í„°
+    private int totalGames;
+    private int totalClears;
+    private int lastClearLife;
+
+    private bool currentRunCounted = false;
+
+    // ì•± ì¤‘ë‹¨ ë° ë³µê·€
+    private bool wasRunningBeforePause = false;
+
 
     void Start()
     {
@@ -49,7 +72,8 @@ public class player : MonoBehaviour
 
         respawnPosition = transform.position;
 
-        // ÀÚµ¿Â÷ ¼Óµµ ÃÊ±âÈ­
+        LoadRecordData();
+
         CarMoveLeft.speedMultiplier = 1f;
         CarMoveRight.speedMultiplier = 1f;
 
@@ -59,13 +83,16 @@ public class player : MonoBehaviour
         gameOverPanel.SetActive(false);
         gameClearPanel.SetActive(false);
 
-        // ¼Óµµ Áõ°¡ ¹®±¸ ¼û±â±â
         if (speedUpText != null)
         {
             speedUpText.gameObject.SetActive(false);
         }
 
         UpdateUI();
+
+        Debug.Log("ì €ì¥ëœ ê²Œì„ ê¸°ë¡ - ì´ ê²Œì„: " + totalGames
+            + " / ì´ í´ë¦¬ì–´: " + totalClears
+            + " / ë§ˆì§€ë§‰ í´ë¦¬ì–´ ë‚¨ì€ ëª©ìˆ¨: " + lastClearLife);
     }
 
 
@@ -76,46 +103,54 @@ public class player : MonoBehaviour
             return;
         }
 
+        // PC í‚¤ë³´ë“œ ì…ë ¥
+        float x = 0f;
+        float z = 0f;
+
         Keyboard keyboard = Keyboard.current;
 
         if (keyboard != null)
         {
-            float x = 0f;
-            float z = 0f;
-
             if (keyboard.aKey.isPressed)
-            {
-                x = -1f;
-            }
+                x -= 1f;
 
             if (keyboard.dKey.isPressed)
-            {
-                x = 1f;
-            }
+                x += 1f;
 
             if (keyboard.wKey.isPressed)
-            {
-                z = 1f;
-            }
+                z += 1f;
 
             if (keyboard.sKey.isPressed)
-            {
-                z = -1f;
-            }
-
-            Vector3 move = new Vector3(-x, 0f, -z);
-
-            controller.Move(move * moveSpeed * Time.deltaTime);
+                z -= 1f;
         }
 
-        // ÀÚµ¿Â÷ ¼Óµµ Áõ°¡ Å¸ÀÌ¸Ó
+        // ëª¨ë°”ì¼ í„°ì¹˜ ì…ë ¥
+        if (mobileLeft)
+            x -= 1f;
+
+        if (mobileRight)
+            x += 1f;
+
+        if (mobileUp)
+            z += 1f;
+
+        if (mobileDown)
+            z -= 1f;
+
+        Vector3 move = new Vector3(-x, 0f, -z);
+
+        move = Vector3.ClampMagnitude(move, 1f);
+
+        controller.Move(move * moveSpeed * Time.deltaTime);
+
+
+        // ìë™ì°¨ ì†ë„ ì¦ê°€ íƒ€ì´ë¨¸
         speedIncreaseTimer += Time.deltaTime;
 
         if (speedIncreaseTimer >= speedIncreaseInterval)
         {
             speedIncreaseTimer = 0f;
 
-            // ½ÇÁ¦·Î ¼Óµµ°¡ Áõ°¡ÇÏ´Â °æ¿ì¿¡¸¸ ¹®±¸ Ç¥½Ã
             bool canIncreaseSpeed =
                 CarMoveLeft.speedMultiplier < maxSpeedMultiplier ||
                 CarMoveRight.speedMultiplier < maxSpeedMultiplier;
@@ -136,7 +171,8 @@ public class player : MonoBehaviour
             }
         }
 
-        // °ÔÀÓ Å¸ÀÌ¸Ó
+
+        // ê²Œì„ íƒ€ì´ë¨¸
         timer -= Time.deltaTime;
 
         if (timer <= 0f)
@@ -149,23 +185,93 @@ public class player : MonoBehaviour
     }
 
 
-    // ¼Óµµ Áõ°¡ ¹®±¸ Ç¥½Ã
+    // ëª¨ë°”ì¼ ë²„íŠ¼ ì…ë ¥ ì „ë‹¬
+    public void SetMobileDirection(
+        MobileMoveButton.MobileDirection direction,
+        bool pressed)
+    {
+        switch (direction)
+        {
+            case MobileMoveButton.MobileDirection.Up:
+                mobileUp = pressed;
+                break;
+
+            case MobileMoveButton.MobileDirection.Down:
+                mobileDown = pressed;
+                break;
+
+            case MobileMoveButton.MobileDirection.Left:
+                mobileLeft = pressed;
+                break;
+
+            case MobileMoveButton.MobileDirection.Right:
+                mobileRight = pressed;
+                break;
+        }
+    }
+
+
+    // íš¨ê³¼ìŒ ì¬ìƒ
+    void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+    }
+
+
+    // ì €ì¥ëœ ê²Œì„ ê¸°ë¡ ë¶ˆëŸ¬ì˜¤ê¸°
+    void LoadRecordData()
+    {
+        totalGames = PlayerPrefs.GetInt("TotalGames", 0);
+        totalClears = PlayerPrefs.GetInt("TotalClears", 0);
+        lastClearLife = PlayerPrefs.GetInt("LastClearLife", 0);
+    }
+
+
+    // ê²Œì„ ê¸°ë¡ ì €ì¥í•˜ê¸°
+    void SaveRecordData()
+    {
+        PlayerPrefs.SetInt("TotalGames", totalGames);
+        PlayerPrefs.SetInt("TotalClears", totalClears);
+        PlayerPrefs.SetInt("LastClearLife", lastClearLife);
+
+        PlayerPrefs.Save();
+
+        Debug.Log("ê²Œì„ ê¸°ë¡ ì €ì¥ ì™„ë£Œ");
+    }
+
+
+    // ìƒˆë¡œìš´ ê²Œì„ ì‹œì‘ ê¸°ë¡
+    void RegisterNewGame()
+    {
+        if (currentRunCounted)
+            return;
+
+        totalGames++;
+
+        currentRunCounted = true;
+
+        SaveRecordData();
+
+        Debug.Log("ì´ ê²Œì„ íšŸìˆ˜: " + totalGames);
+    }
+
+
+    // ì†ë„ ì¦ê°€ í‘œì‹œ
     void ShowSpeedUpText()
     {
         if (speedUpText == null)
-        {
             return;
-        }
 
         speedUpText.gameObject.SetActive(true);
 
-        // ¹®±¸°¡ ÀÌ¹Ì Ç¥½Ã ÁßÀÌ¸é ¼û±â´Â ½Ã°£ °»½Å
         CancelInvoke(nameof(HideSpeedUpText));
         Invoke(nameof(HideSpeedUpText), 2f);
     }
 
 
-    // ¼Óµµ Áõ°¡ ¹®±¸ ¼û±â±â
     void HideSpeedUpText()
     {
         if (speedUpText != null)
@@ -178,13 +284,14 @@ public class player : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (!isStarted || isGameOver || isClear)
-        {
             return;
-        }
 
         if (other.CompareTag("Car") && !isInvincible)
         {
-            // Ãæµ¹ ÀÌÆåÆ® »ı¼º
+            // ì¶©ëŒ íš¨ê³¼ìŒ
+            PlaySound(hitSound);
+
+            // ì¶©ëŒ ì´í™íŠ¸ ìƒì„±
             if (hitEffectPrefab != null)
             {
                 GameObject effect = Instantiate(
@@ -193,7 +300,6 @@ public class player : MonoBehaviour
                     Quaternion.identity
                 );
 
-                // ÆÄÆ¼Å¬ Àç»ıÀÌ ³¡³ª¸é ÀÌÆåÆ® ¿ÀºêÁ§Æ® »èÁ¦
                 ParticleSystem ps =
                     effect.GetComponentInChildren<ParticleSystem>();
 
@@ -212,14 +318,14 @@ public class player : MonoBehaviour
                 }
             }
 
-            // ¸ñ¼û °¨¼Ò
+            // ëª©ìˆ¨ ê°ì†Œ
             life--;
 
             UpdateUI();
 
-            Debug.Log("¸ñ¼û °¨¼Ò! ³²Àº ¸ñ¼û: " + life);
+            Debug.Log("ëª©ìˆ¨ ê°ì†Œ! ë‚¨ì€ ëª©ìˆ¨: " + life);
 
-            // ¹«Àû »óÅÂ ½ÃÀÛ
+            // ë¬´ì  ìƒíƒœ ì‹œì‘
             isInvincible = true;
 
             CancelInvoke(nameof(ResetDamage));
@@ -236,7 +342,7 @@ public class player : MonoBehaviour
     }
 
 
-    // ÇÃ·¹ÀÌ¾î ±ôºıÀÓ
+    // í”Œë ˆì´ì–´ ê¹œë¹¡ì„
     void BlinkPlayer()
     {
         foreach (Renderer playerRenderer in playerRenderers)
@@ -246,7 +352,7 @@ public class player : MonoBehaviour
     }
 
 
-    // ¹«Àû »óÅÂ Á¾·á
+    // ë¬´ì  ìƒíƒœ ì¢…ë£Œ
     void ResetDamage()
     {
         isInvincible = false;
@@ -260,23 +366,41 @@ public class player : MonoBehaviour
     }
 
 
-    // °ÔÀÓ ¿À¹ö
+    // ê²Œì„ ì˜¤ë²„
     void GameOver()
     {
         isGameOver = true;
+
+        PlaySound(gameOverSound);
 
         HideSpeedUpText();
 
         gameOverPanel.SetActive(true);
 
+        SaveRecordData();
+
         Time.timeScale = 0f;
     }
 
 
-    // °ÔÀÓ Å¬¸®¾î
+    // ê²Œì„ í´ë¦¬ì–´
     void GameClear()
     {
+        if (isClear)
+            return;
+
         isClear = true;
+
+        totalClears++;
+        lastClearLife = life;
+
+        SaveRecordData();
+
+        PlaySound(victorySound);
+
+        Debug.Log("ê²Œì„ í´ë¦¬ì–´!");
+        Debug.Log("ì´ í´ë¦¬ì–´ íšŸìˆ˜: " + totalClears);
+        Debug.Log("ë§ˆì§€ë§‰ í´ë¦¬ì–´ ë‚¨ì€ ëª©ìˆ¨: " + lastClearLife);
 
         HideSpeedUpText();
 
@@ -286,7 +410,7 @@ public class player : MonoBehaviour
     }
 
 
-    // UI ¾÷µ¥ÀÌÆ®
+    // UI ì—…ë°ì´íŠ¸
     void UpdateUI()
     {
         lifeText.text = "Life : " + life;
@@ -294,9 +418,13 @@ public class player : MonoBehaviour
     }
 
 
-    // °ÔÀÓ ½ÃÀÛ
+    // ê²Œì„ ì‹œì‘
     public void StartGame()
     {
+        PlaySound(buttonClickSound);
+
+        RegisterNewGame();
+
         isStarted = true;
 
         Time.timeScale = 1f;
@@ -305,9 +433,11 @@ public class player : MonoBehaviour
     }
 
 
-    // °ÔÀÓ Àç½ÃÀÛ
+    // ê²Œì„ ì¬ì‹œì‘
     public void RestartGame()
     {
+        PlaySound(buttonClickSound);
+
         Time.timeScale = 1f;
 
         CancelInvoke(nameof(ResetDamage));
@@ -322,27 +452,33 @@ public class player : MonoBehaviour
         life = 3;
         timer = 60f;
 
-        // ÀÚµ¿Â÷ ¼Óµµ ÃÊ±âÈ­
         speedIncreaseTimer = 0f;
+
+        currentRunCounted = false;
+        RegisterNewGame();
 
         CarMoveLeft.speedMultiplier = 1f;
         CarMoveRight.speedMultiplier = 1f;
 
-        // ¼Óµµ Áõ°¡ ¹®±¸ ¼û±â±â
         HideSpeedUpText();
 
-        // ÇÃ·¹ÀÌ¾î À§Ä¡ ÃÊ±âÈ­
+        // ëª¨ë°”ì¼ ë²„íŠ¼ ì…ë ¥ ì´ˆê¸°í™”
+        mobileUp = false;
+        mobileDown = false;
+        mobileLeft = false;
+        mobileRight = false;
+
+        // í”Œë ˆì´ì–´ ìœ„ì¹˜ ì´ˆê¸°í™”
         controller.enabled = false;
         transform.position = respawnPosition;
         controller.enabled = true;
 
-        // ÇÃ·¹ÀÌ¾î ·»´õ·¯ ´Ù½Ã Ç¥½Ã
         foreach (Renderer playerRenderer in playerRenderers)
         {
             playerRenderer.enabled = true;
         }
 
-        // ÀÚµ¿Â÷ À§Ä¡ ÃÊ±âÈ­
+        // ìë™ì°¨ ìœ„ì¹˜ ì´ˆê¸°í™”
         foreach (CarMoveLeft car in leftCars)
         {
             car.ResetCarPosition();
@@ -353,7 +489,6 @@ public class player : MonoBehaviour
             car.ResetCarPosition();
         }
 
-        // UI ÃÊ±âÈ­
         startPanel.SetActive(false);
         gameOverPanel.SetActive(false);
         gameClearPanel.SetActive(false);
@@ -362,9 +497,52 @@ public class player : MonoBehaviour
     }
 
 
-    // °ÔÀÓ Á¾·á
+    // ì•± ì¤‘ë‹¨ ë° ë³µê·€
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            wasRunningBeforePause =
+                isStarted && !isGameOver && !isClear
+                && Time.timeScale > 0f;
+
+            if (wasRunningBeforePause)
+            {
+                Time.timeScale = 0f;
+            }
+
+            SaveRecordData();
+
+            Debug.Log("ì•± ì¼ì‹œì •ì§€ - ê²Œì„ ê¸°ë¡ ì €ì¥");
+        }
+        else
+        {
+            if (wasRunningBeforePause)
+            {
+                Time.timeScale = 1f;
+            }
+
+            wasRunningBeforePause = false;
+
+            Debug.Log("ì•± ë³µê·€");
+        }
+    }
+
+
+    // ì•± ì¢…ë£Œ ì‹œ ê¸°ë¡ ì €ì¥
+    void OnApplicationQuit()
+    {
+        SaveRecordData();
+    }
+
+
+    // ê²Œì„ ì¢…ë£Œ
     public void QuitGame()
     {
+        PlaySound(buttonClickSound);
+
+        SaveRecordData();
+
         Application.Quit();
     }
 }
