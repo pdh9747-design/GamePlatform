@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
@@ -48,25 +49,49 @@ public class player : MonoBehaviour
     private bool isGameOver = false;
     private bool isClear = false;
 
-    // 모바일 버튼 입력 상태
     private bool mobileUp;
     private bool mobileDown;
     private bool mobileLeft;
     private bool mobileRight;
 
-    // 저장 데이터
     private int totalGames;
     private int totalClears;
     private int lastClearLife;
 
     private bool currentRunCounted = false;
-
-    // 앱 중단 및 복귀
     private bool wasRunningBeforePause = false;
 
 
-    void Start()
+    IEnumerator Start()
     {
+        // JSON 설정이 로드될 때까지 대기
+        while (GameSettingsLoader.Instance != null &&
+               !GameSettingsLoader.Instance.IsLoaded)
+        {
+            yield return null;
+        }
+
+        // JSON 설정 적용
+        if (GameSettingsLoader.Instance != null)
+        {
+            GameSettingsData settings =
+                GameSettingsLoader.Instance.settings;
+
+            moveSpeed = settings.moveSpeed;
+            timer = settings.gameTime;
+            speedIncreaseInterval = settings.speedIncreaseInterval;
+            speedIncreaseAmount = settings.speedIncreaseAmount;
+            maxSpeedMultiplier = settings.maxSpeedMultiplier;
+
+            Debug.Log("JSON 설정이 게임에 적용되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning(
+                "GameSettingsManager가 없습니다. Inspector 기본값을 사용합니다."
+            );
+        }
+
         controller = GetComponent<CharacterController>();
         playerRenderers = GetComponentsInChildren<Renderer>();
 
@@ -90,20 +115,19 @@ public class player : MonoBehaviour
 
         UpdateUI();
 
-        Debug.Log("저장된 게임 기록 - 총 게임: " + totalGames
+        Debug.Log(
+            "저장된 게임 기록 - 총 게임: " + totalGames
             + " / 총 클리어: " + totalClears
-            + " / 마지막 클리어 남은 목숨: " + lastClearLife);
+            + " / 마지막 클리어 남은 목숨: " + lastClearLife
+        );
     }
 
 
     void Update()
     {
         if (!isStarted || isGameOver || isClear)
-        {
             return;
-        }
 
-        // PC 키보드 입력
         float x = 0f;
         float z = 0f;
 
@@ -124,7 +148,6 @@ public class player : MonoBehaviour
                 z -= 1f;
         }
 
-        // 모바일 터치 입력
         if (mobileLeft)
             x -= 1f;
 
@@ -138,13 +161,12 @@ public class player : MonoBehaviour
             z -= 1f;
 
         Vector3 move = new Vector3(-x, 0f, -z);
-
         move = Vector3.ClampMagnitude(move, 1f);
 
         controller.Move(move * moveSpeed * Time.deltaTime);
 
 
-        // 자동차 속도 증가 타이머
+        // 자동차 속도 증가
         speedIncreaseTimer += Time.deltaTime;
 
         if (speedIncreaseTimer >= speedIncreaseInterval)
@@ -166,9 +188,7 @@ public class player : MonoBehaviour
             );
 
             if (canIncreaseSpeed)
-            {
                 ShowSpeedUpText();
-            }
         }
 
 
@@ -185,7 +205,6 @@ public class player : MonoBehaviour
     }
 
 
-    // 모바일 버튼 입력 전달
     public void SetMobileDirection(
         MobileMoveButton.MobileDirection direction,
         bool pressed)
@@ -211,7 +230,6 @@ public class player : MonoBehaviour
     }
 
 
-    // 효과음 재생
     void PlaySound(AudioClip clip)
     {
         if (audioSource != null && clip != null)
@@ -221,7 +239,6 @@ public class player : MonoBehaviour
     }
 
 
-    // 저장된 게임 기록 불러오기
     void LoadRecordData()
     {
         totalGames = PlayerPrefs.GetInt("TotalGames", 0);
@@ -230,7 +247,6 @@ public class player : MonoBehaviour
     }
 
 
-    // 게임 기록 저장하기
     void SaveRecordData()
     {
         PlayerPrefs.SetInt("TotalGames", totalGames);
@@ -243,14 +259,12 @@ public class player : MonoBehaviour
     }
 
 
-    // 새로운 게임 시작 기록
     void RegisterNewGame()
     {
         if (currentRunCounted)
             return;
 
         totalGames++;
-
         currentRunCounted = true;
 
         SaveRecordData();
@@ -259,7 +273,6 @@ public class player : MonoBehaviour
     }
 
 
-    // 속도 증가 표시
     void ShowSpeedUpText()
     {
         if (speedUpText == null)
@@ -288,10 +301,8 @@ public class player : MonoBehaviour
 
         if (other.CompareTag("Car") && !isInvincible)
         {
-            // 충돌 효과음
             PlaySound(hitSound);
 
-            // 충돌 이펙트 생성
             if (hitEffectPrefab != null)
             {
                 GameObject effect = Instantiate(
@@ -318,14 +329,12 @@ public class player : MonoBehaviour
                 }
             }
 
-            // 목숨 감소
             life--;
 
             UpdateUI();
 
             Debug.Log("목숨 감소! 남은 목숨: " + life);
 
-            // 무적 상태 시작
             isInvincible = true;
 
             CancelInvoke(nameof(ResetDamage));
@@ -335,14 +344,11 @@ public class player : MonoBehaviour
             Invoke(nameof(ResetDamage), 3f);
 
             if (life <= 0)
-            {
                 GameOver();
-            }
         }
     }
 
 
-    // 플레이어 깜빡임
     void BlinkPlayer()
     {
         foreach (Renderer playerRenderer in playerRenderers)
@@ -352,7 +358,6 @@ public class player : MonoBehaviour
     }
 
 
-    // 무적 상태 종료
     void ResetDamage()
     {
         isInvincible = false;
@@ -366,13 +371,11 @@ public class player : MonoBehaviour
     }
 
 
-    // 게임 오버
     void GameOver()
     {
         isGameOver = true;
 
         PlaySound(gameOverSound);
-
         HideSpeedUpText();
 
         gameOverPanel.SetActive(true);
@@ -383,7 +386,6 @@ public class player : MonoBehaviour
     }
 
 
-    // 게임 클리어
     void GameClear()
     {
         if (isClear)
@@ -410,7 +412,6 @@ public class player : MonoBehaviour
     }
 
 
-    // UI 업데이트
     void UpdateUI()
     {
         lifeText.text = "Life : " + life;
@@ -418,7 +419,6 @@ public class player : MonoBehaviour
     }
 
 
-    // 게임 시작
     public void StartGame()
     {
         PlaySound(buttonClickSound);
@@ -433,7 +433,6 @@ public class player : MonoBehaviour
     }
 
 
-    // 게임 재시작
     public void RestartGame()
     {
         PlaySound(buttonClickSound);
@@ -450,7 +449,16 @@ public class player : MonoBehaviour
         isClear = false;
 
         life = 3;
-        timer = 60f;
+
+        // JSON에서 불러온 제한 시간으로 초기화
+        if (GameSettingsLoader.Instance != null)
+        {
+            timer = GameSettingsLoader.Instance.settings.gameTime;
+        }
+        else
+        {
+            timer = 60f;
+        }
 
         speedIncreaseTimer = 0f;
 
@@ -462,13 +470,11 @@ public class player : MonoBehaviour
 
         HideSpeedUpText();
 
-        // 모바일 버튼 입력 초기화
         mobileUp = false;
         mobileDown = false;
         mobileLeft = false;
         mobileRight = false;
 
-        // 플레이어 위치 초기화
         controller.enabled = false;
         transform.position = respawnPosition;
         controller.enabled = true;
@@ -478,7 +484,6 @@ public class player : MonoBehaviour
             playerRenderer.enabled = true;
         }
 
-        // 자동차 위치 초기화
         foreach (CarMoveLeft car in leftCars)
         {
             car.ResetCarPosition();
@@ -497,7 +502,6 @@ public class player : MonoBehaviour
     }
 
 
-    // 앱 중단 및 복귀
     void OnApplicationPause(bool pauseStatus)
     {
         if (pauseStatus)
@@ -507,9 +511,7 @@ public class player : MonoBehaviour
                 && Time.timeScale > 0f;
 
             if (wasRunningBeforePause)
-            {
                 Time.timeScale = 0f;
-            }
 
             SaveRecordData();
 
@@ -518,9 +520,7 @@ public class player : MonoBehaviour
         else
         {
             if (wasRunningBeforePause)
-            {
                 Time.timeScale = 1f;
-            }
 
             wasRunningBeforePause = false;
 
@@ -529,14 +529,12 @@ public class player : MonoBehaviour
     }
 
 
-    // 앱 종료 시 기록 저장
     void OnApplicationQuit()
     {
         SaveRecordData();
     }
 
 
-    // 게임 종료
     public void QuitGame()
     {
         PlaySound(buttonClickSound);

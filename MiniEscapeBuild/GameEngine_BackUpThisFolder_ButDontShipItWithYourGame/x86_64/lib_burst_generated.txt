@@ -1,4 +1,4 @@
-Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+Library: C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --platform=Windows
 --minimum-os-version=
 --backend=burst-llvm-21
@@ -9,11 +9,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --target-framework=NetFramework
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Collections.xxHash3, Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Hash64Long(System.Byte*, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.Byte*, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.Byte*, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--93df17b7366cd622dfa5ea2d3c75cf0b
@@ -51,11 +51,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --target-framework=NetFramework
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Collections.xxHash3, Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Hash64Long(System.Byte*, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.Byte*, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.Byte*, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--93df17b7366cd622dfa5ea2d3c75cf0b
@@ -93,11 +93,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --target-framework=NetFramework
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=UnityEngine.Rendering.Universal.ShadowUtility, Unity.RenderPipelines.Universal.2D.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::CalculateShadowTriangles_FromTriangles(Unity.Collections.NativeArray`1[[Unity.Mathematics.float3, UnityEngine.MathematicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|Unity.Collections.NativeArray`1[[UnityEngine.Rendering.Universal.ShadowEdge, Unity.RenderPipelines.Universal.2D.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|Unity.Collections.NativeArray`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|Unity.Collections.NativeArray`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null)--80dfe03e82411801fbe4c2453500d553
@@ -135,11 +135,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --target-framework=NetFramework
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=UnityEngine.Rendering.Universal.ShadowUtility, Unity.RenderPipelines.Universal.2D.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::CalculateShadowTriangles_FromTriangles(Unity.Collections.NativeArray`1[[Unity.Mathematics.float3, UnityEngine.MathematicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|Unity.Collections.NativeArray`1[[UnityEngine.Rendering.Universal.ShadowEdge, Unity.RenderPipelines.Universal.2D.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|Unity.Collections.NativeArray`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|Unity.Collections.NativeArray`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null)--80dfe03e82411801fbe4c2453500d553
@@ -177,11 +177,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --target-framework=NetFramework
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Jobs.IJobParallelForExtensions+ParallelForJobStruct`1[[UnityEngine.Rendering.DrawCommandOutputPerBatch, Unity.RenderPipelines.GPUDriven.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.DrawCommandOutputPerBatch&, Unity.RenderPipelines.GPUDriven.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--f531652faf1e45081f68869b8a72d6da
@@ -219,11 +219,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --target-framework=NetFramework
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Jobs.IJobParallelForExtensions+ParallelForJobStruct`1[[UnityEngine.Rendering.DrawCommandOutputPerBatch, Unity.RenderPipelines.GPUDriven.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.DrawCommandOutputPerBatch&, Unity.RenderPipelines.GPUDriven.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--f531652faf1e45081f68869b8a72d6da
@@ -263,11 +263,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --float-mode=Fast
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Jobs.IJobForExtensions+ForJobStruct`1[[UnityEngine.Rendering.Universal.ZBinningJob, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.Universal.ZBinningJob&, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--77fc393cb521ac129b1392d4eb94d29a
@@ -284,11 +284,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --float-mode=Fast
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Jobs.IJobForExtensions+ForJobStruct`1[[UnityEngine.Rendering.Universal.ZBinningJob, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.Universal.ZBinningJob&, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--77fc393cb521ac129b1392d4eb94d29a
@@ -303,11 +303,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --target-framework=NetFramework
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Jobs.IJobParallelForExtensions+ParallelForJobStruct`1[[UnityEngine.Rendering.InstanceDataSystem+UpdateRendererInstancesJob, Unity.RenderPipelines.GPUDriven.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.InstanceDataSystem+UpdateRendererInstancesJob&, Unity.RenderPipelines.GPUDriven.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--629364e44aefad191e287c15b5f1415d
@@ -345,11 +345,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --target-framework=NetFramework
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Jobs.IJobParallelForExtensions+ParallelForJobStruct`1[[UnityEngine.Rendering.InstanceDataSystem+UpdateRendererInstancesJob, Unity.RenderPipelines.GPUDriven.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.InstanceDataSystem+UpdateRendererInstancesJob&, Unity.RenderPipelines.GPUDriven.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--629364e44aefad191e287c15b5f1415d
@@ -387,11 +387,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --target-framework=NetFramework
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Jobs.IJobParallelForExtensions+ParallelForJobStruct`1[[UnityEngine.Splines.GetPosition, Unity.Splines, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Splines.GetPosition&, Unity.Splines, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--742b9ab1bc1447267d47d3f600d7ff7e
@@ -415,11 +415,11 @@ Library: C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\
 --target-framework=NetFramework
 --linker-options=PdbAltPath="GameEngine_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Admin\Desktop\GameEngine\Temp\Burst
+--temp-folder=C:\Users\Admin\Desktop\GamePlatform\Temp\Burst
 --emit-version-symbol=True
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Admin\Desktop\GameEngine\Library\Burst
---output=C:\Users\Admin\Desktop\GameEngine\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--decode-folder=C:\Users\Admin\Desktop\GamePlatform\Library\Burst
+--output=C:\Users\Admin\Desktop\GamePlatform\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Jobs.IJobParallelForExtensions+ParallelForJobStruct`1[[UnityEngine.Splines.GetPosition, Unity.Splines, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Splines.GetPosition&, Unity.Splines, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--742b9ab1bc1447267d47d3f600d7ff7e

@@ -1,0 +1,7 @@
+{
+    "moveSpeed": 5.0,
+    "gameTime": 60.0,
+    "speedIncreaseInterval": 15.0,
+    "speedIncreaseAmount": 0.2,
+    "maxSpeedMultiplier": 2.0
+}
