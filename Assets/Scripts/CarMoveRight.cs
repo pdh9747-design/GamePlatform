@@ -6,35 +6,37 @@ public class CarMoveRight : MonoBehaviour
     public float resetX = 50f;
     public float endX = -50f;
 
-    // 모든 자동차가 공유하는 속도 배율
     public static float speedMultiplier = 1f;
 
     private Vector3 startPosition;
+    private Transform carTransform;
+
+    void Awake()
+    {
+        carTransform = transform;
+    }
 
     void Start()
     {
-        // 게임 시작 시 자동차의 원래 위치 저장
-        startPosition = transform.position;
+        startPosition = carTransform.position;
     }
 
     void Update()
     {
-        transform.Translate(
-            Vector3.forward * speed * speedMultiplier * Time.deltaTime,
-            Space.Self
-        );
+        Vector3 pos = carTransform.position;
 
-        if (transform.position.x < endX)
+        pos += carTransform.forward * speed * speedMultiplier * Time.deltaTime;
+
+        if (pos.x < endX)
         {
-            Vector3 pos = transform.position;
             pos.x = resetX;
-            transform.position = pos;
         }
+
+        carTransform.position = pos;
     }
 
-    // 다시하기 버튼에서 호출할 초기화 함수
     public void ResetCarPosition()
     {
-        transform.position = startPosition;
+        carTransform.position = startPosition;
     }
 }
