@@ -61,6 +61,20 @@ public class player : MonoBehaviour
     private bool currentRunCounted = false;
     private bool wasRunningBeforePause = false;
 
+    // 컴포넌트 초기화
+    void Awake()
+    {
+        controller = GetComponent<CharacterController>();
+        playerRenderers = GetComponentsInChildren<Renderer>();
+
+        if (controller == null)
+        {
+            Debug.LogError(
+                "Player에 CharacterController가 없습니다!",
+                this
+            );
+        }
+    }
 
     IEnumerator Start()
     {
@@ -72,7 +86,8 @@ public class player : MonoBehaviour
         }
 
         // JSON 설정 적용
-        if (GameSettingsLoader.Instance != null)
+        if (GameSettingsLoader.Instance != null &&
+            GameSettingsLoader.Instance.settings != null)
         {
             GameSettingsData settings =
                 GameSettingsLoader.Instance.settings;
@@ -88,12 +103,9 @@ public class player : MonoBehaviour
         else
         {
             Debug.LogWarning(
-                "GameSettingsManager가 없습니다. Inspector 기본값을 사용합니다."
+                "GameSettingsManager가 없거나 설정 데이터가 없습니다. Inspector 기본값을 사용합니다."
             );
         }
-
-        controller = GetComponent<CharacterController>();
-        playerRenderers = GetComponentsInChildren<Renderer>();
 
         respawnPosition = transform.position;
 
@@ -104,28 +116,33 @@ public class player : MonoBehaviour
 
         Time.timeScale = 0f;
 
-        startPanel.SetActive(true);
-        gameOverPanel.SetActive(false);
-        gameClearPanel.SetActive(false);
+        if (startPanel != null)
+            startPanel.SetActive(true);
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
+
+        if (gameClearPanel != null)
+            gameClearPanel.SetActive(false);
 
         if (speedUpText != null)
-        {
             speedUpText.gameObject.SetActive(false);
-        }
 
         UpdateUI();
 
         Debug.Log(
-            "저장된 게임 기록 - 총 게임: " + totalGames
-            + " / 총 클리어: " + totalClears
-            + " / 마지막 클리어 남은 목숨: " + lastClearLife
+            "저장된 게임 기록 - 총 게임: " + totalGames +
+            " / 총 클리어: " + totalClears +
+            " / 마지막 클리어 남은 목숨: " + lastClearLife
         );
     }
-
 
     void Update()
     {
         if (!isStarted || isGameOver || isClear)
+            return;
+
+        if (controller == null)
             return;
 
         float x = 0f;
@@ -163,13 +180,15 @@ public class player : MonoBehaviour
         Vector3 move = new Vector3(-x, 0f, -z);
         move = Vector3.ClampMagnitude(move, 1f);
 
-        controller.Move(move * moveSpeed * Time.deltaTime);
-
+        controller.Move(
+            move * moveSpeed * Time.deltaTime
+        );
 
         // 자동차 속도 증가
         speedIncreaseTimer += Time.deltaTime;
 
-        if (speedIncreaseTimer >= speedIncreaseInterval)
+        if (speedIncreaseInterval > 0f &&
+            speedIncreaseTimer >= speedIncreaseInterval)
         {
             speedIncreaseTimer = 0f;
 
@@ -191,7 +210,6 @@ public class player : MonoBehaviour
                 ShowSpeedUpText();
         }
 
-
         // 게임 타이머
         timer -= Time.deltaTime;
 
@@ -204,7 +222,7 @@ public class player : MonoBehaviour
         UpdateUI();
     }
 
-
+    // 모바일 방향 입력
     public void SetMobileDirection(
         MobileMoveButton.MobileDirection direction,
         bool pressed)
@@ -229,7 +247,7 @@ public class player : MonoBehaviour
         }
     }
 
-
+    // 사운드 재생
     void PlaySound(AudioClip clip)
     {
         if (audioSource != null && clip != null)
@@ -238,7 +256,7 @@ public class player : MonoBehaviour
         }
     }
 
-
+    // 게임 기록 불러오기
     void LoadRecordData()
     {
         totalGames = PlayerPrefs.GetInt("TotalGames", 0);
@@ -246,7 +264,7 @@ public class player : MonoBehaviour
         lastClearLife = PlayerPrefs.GetInt("LastClearLife", 0);
     }
 
-
+    // 게임 기록 저장
     void SaveRecordData()
     {
         PlayerPrefs.SetInt("TotalGames", totalGames);
@@ -258,7 +276,7 @@ public class player : MonoBehaviour
         Debug.Log("게임 기록 저장 완료");
     }
 
-
+    // 새로운 게임 기록
     void RegisterNewGame()
     {
         if (currentRunCounted)
@@ -272,7 +290,7 @@ public class player : MonoBehaviour
         Debug.Log("총 게임 횟수: " + totalGames);
     }
 
-
+    // 속도 증가 알림
     void ShowSpeedUpText()
     {
         if (speedUpText == null)
@@ -284,7 +302,6 @@ public class player : MonoBehaviour
         Invoke(nameof(HideSpeedUpText), 2f);
     }
 
-
     void HideSpeedUpText()
     {
         if (speedUpText != null)
@@ -293,10 +310,10 @@ public class player : MonoBehaviour
         }
     }
 
-
+    // 차량 충돌 감지
     void OnTriggerEnter(Collider other)
     {
-        if (!isStarted || isGameOver || isClear)
+        if (!isStarted || isGameOver || isClear || other == null)
             return;
 
         if (other.CompareTag("Car") && !isInvincible)
@@ -320,7 +337,8 @@ public class player : MonoBehaviour
 
                     Destroy(
                         effect,
-                        main.duration + main.startLifetime.constantMax
+                        main.duration +
+                        main.startLifetime.constantMax
                     );
                 }
                 else
@@ -340,7 +358,12 @@ public class player : MonoBehaviour
             CancelInvoke(nameof(ResetDamage));
             CancelInvoke(nameof(BlinkPlayer));
 
-            InvokeRepeating(nameof(BlinkPlayer), 0f, 0.2f);
+            InvokeRepeating(
+                nameof(BlinkPlayer),
+                0f,
+                0.2f
+            );
+
             Invoke(nameof(ResetDamage), 3f);
 
             if (life <= 0)
@@ -348,29 +371,42 @@ public class player : MonoBehaviour
         }
     }
 
-
+    // 플레이어 깜빡임
     void BlinkPlayer()
     {
+        if (playerRenderers == null)
+            return;
+
         foreach (Renderer playerRenderer in playerRenderers)
         {
-            playerRenderer.enabled = !playerRenderer.enabled;
+            if (playerRenderer != null)
+            {
+                playerRenderer.enabled =
+                    !playerRenderer.enabled;
+            }
         }
     }
 
-
+    // 무적 상태 종료
     void ResetDamage()
     {
         isInvincible = false;
 
         CancelInvoke(nameof(BlinkPlayer));
 
+        if (playerRenderers == null)
+            return;
+
         foreach (Renderer playerRenderer in playerRenderers)
         {
-            playerRenderer.enabled = true;
+            if (playerRenderer != null)
+            {
+                playerRenderer.enabled = true;
+            }
         }
     }
 
-
+    // 게임 오버
     void GameOver()
     {
         isGameOver = true;
@@ -378,14 +414,15 @@ public class player : MonoBehaviour
         PlaySound(gameOverSound);
         HideSpeedUpText();
 
-        gameOverPanel.SetActive(true);
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(true);
 
         SaveRecordData();
 
         Time.timeScale = 0f;
     }
 
-
+    // 게임 클리어
     void GameClear()
     {
         if (isClear)
@@ -406,19 +443,24 @@ public class player : MonoBehaviour
 
         HideSpeedUpText();
 
-        gameClearPanel.SetActive(true);
+        if (gameClearPanel != null)
+            gameClearPanel.SetActive(true);
 
         Time.timeScale = 0f;
     }
 
-
+    // UI 갱신
     void UpdateUI()
     {
-        lifeText.text = "Life : " + life;
-        timerText.text = "Time : " + Mathf.CeilToInt(timer);
+        if (lifeText != null)
+            lifeText.text = "Life : " + life;
+
+        if (timerText != null)
+            timerText.text = "Time : " +
+                Mathf.CeilToInt(timer);
     }
 
-
+    // 게임 시작
     public void StartGame()
     {
         PlaySound(buttonClickSound);
@@ -429,10 +471,11 @@ public class player : MonoBehaviour
 
         Time.timeScale = 1f;
 
-        startPanel.SetActive(false);
+        if (startPanel != null)
+            startPanel.SetActive(false);
     }
 
-
+    // 게임 재시작
     public void RestartGame()
     {
         PlaySound(buttonClickSound);
@@ -450,10 +493,12 @@ public class player : MonoBehaviour
 
         life = 3;
 
-        // JSON에서 불러온 제한 시간으로 초기화
-        if (GameSettingsLoader.Instance != null)
+        // JSON에서 제한 시간 불러오기
+        if (GameSettingsLoader.Instance != null &&
+            GameSettingsLoader.Instance.settings != null)
         {
-            timer = GameSettingsLoader.Instance.settings.gameTime;
+            timer =
+                GameSettingsLoader.Instance.settings.gameTime;
         }
         else
         {
@@ -475,40 +520,69 @@ public class player : MonoBehaviour
         mobileLeft = false;
         mobileRight = false;
 
-        controller.enabled = false;
-        transform.position = respawnPosition;
-        controller.enabled = true;
-
-        foreach (Renderer playerRenderer in playerRenderers)
+        // 플레이어 위치 초기화
+        if (controller != null)
         {
-            playerRenderer.enabled = true;
+            controller.enabled = false;
+            transform.position = respawnPosition;
+            controller.enabled = true;
+        }
+        else
+        {
+            transform.position = respawnPosition;
         }
 
-        foreach (CarMoveLeft car in leftCars)
+        // 플레이어 렌더러 복구
+        if (playerRenderers != null)
         {
-            car.ResetCarPosition();
+            foreach (Renderer playerRenderer in playerRenderers)
+            {
+                if (playerRenderer != null)
+                    playerRenderer.enabled = true;
+            }
         }
 
-        foreach (CarMoveRight car in rightCars)
+        // 차량 위치 초기화
+        if (leftCars != null)
         {
-            car.ResetCarPosition();
+            foreach (CarMoveLeft car in leftCars)
+            {
+                if (car != null)
+                    car.ResetCarPosition();
+            }
         }
 
-        startPanel.SetActive(false);
-        gameOverPanel.SetActive(false);
-        gameClearPanel.SetActive(false);
+        if (rightCars != null)
+        {
+            foreach (CarMoveRight car in rightCars)
+            {
+                if (car != null)
+                    car.ResetCarPosition();
+            }
+        }
+
+        if (startPanel != null)
+            startPanel.SetActive(false);
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
+
+        if (gameClearPanel != null)
+            gameClearPanel.SetActive(false);
 
         UpdateUI();
     }
 
-
+    // 앱 일시정지 및 복귀
     void OnApplicationPause(bool pauseStatus)
     {
         if (pauseStatus)
         {
             wasRunningBeforePause =
-                isStarted && !isGameOver && !isClear
-                && Time.timeScale > 0f;
+                isStarted &&
+                !isGameOver &&
+                !isClear &&
+                Time.timeScale > 0f;
 
             if (wasRunningBeforePause)
                 Time.timeScale = 0f;
@@ -528,13 +602,13 @@ public class player : MonoBehaviour
         }
     }
 
-
+    // 앱 종료
     void OnApplicationQuit()
     {
         SaveRecordData();
     }
 
-
+    // 게임 종료 버튼
     public void QuitGame()
     {
         PlaySound(buttonClickSound);
