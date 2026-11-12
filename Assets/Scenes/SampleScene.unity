@@ -3571,7 +3571,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC2DC\uAC04 : 60\uCD08"
+  m_text: 'Time : 60'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0f8eb0f111df894479ad9c542bc85512, type: 2}
   m_sharedMaterial: {fileID: 6240287968250822875, guid: 0f8eb0f111df894479ad9c542bc85512, type: 2}
@@ -5309,7 +5309,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBAA9\uC228 : 3"
+  m_text: 'Life : 3'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0f8eb0f111df894479ad9c542bc85512, type: 2}
   m_sharedMaterial: {fileID: 6240287968250822875, guid: 0f8eb0f111df894479ad9c542bc85512, type: 2}
