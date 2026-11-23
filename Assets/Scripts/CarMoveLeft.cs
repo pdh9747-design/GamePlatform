@@ -3,8 +3,8 @@ using UnityEngine;
 public class CarMoveLeft : MonoBehaviour
 {
     public float speed = 10f;
-    public float resetX = -50f;
-    public float endX = 50f;
+    public float resetX = -85f;
+    public float endX = 120f;
 
     public static float speedMultiplier = 1f;
 
