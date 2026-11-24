@@ -6298,8 +6298,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  resetX: 50
-  endX: -50
+  resetX: 120
+  endX: -85
 --- !u!65 &879531344
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13759,7 +13759,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 15
   respawnPosition: {x: 0, y: 0, z: 0}
-  dashSpeed: 15
+  dashSpeed: 25
   dashDuration: 0.2
   dashCooldown: 2
   lifeText: {fileID: 1184352479}

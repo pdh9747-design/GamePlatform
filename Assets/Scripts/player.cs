@@ -11,7 +11,7 @@ public class player : MonoBehaviour
     public Vector3 respawnPosition;
 
     [Header("Dash")]
-    public float dashSpeed = 15f;
+    public float dashSpeed = 25f;
     public float dashDuration = 0.2f;
     public float dashCooldown = 2f;
 
