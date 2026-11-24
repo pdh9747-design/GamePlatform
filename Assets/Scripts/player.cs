@@ -1,3 +1,4 @@
+
 using System.Collections;
 using UnityEngine;
 using TMPro;
@@ -8,6 +9,17 @@ public class player : MonoBehaviour
     [Header("Player")]
     public float moveSpeed = 5f;
     public Vector3 respawnPosition;
+
+    [Header("Dash")]
+    public float dashSpeed = 15f;
+    public float dashDuration = 0.2f;
+    public float dashCooldown = 2f;
+
+    private float dashTimer = 0f;
+    private float dashCooldownTimer = 0f;
+    private bool isDashing = false;
+    private Vector3 dashDirection;
+    private Vector3 lastMoveDirection = Vector3.back;
 
     [Header("UI")]
     public TextMeshProUGUI lifeText;
@@ -21,6 +33,8 @@ public class player : MonoBehaviour
     [Header("Cars")]
     public CarMoveLeft[] leftCars;
     public CarMoveRight[] rightCars;
+    public CarMoveUp[] upCars;
+    public CarMoveDown[] downCars;
 
     [Header("Hit Effect")]
     public GameObject hitEffectPrefab;
@@ -61,7 +75,6 @@ public class player : MonoBehaviour
     private bool currentRunCounted = false;
     private bool wasRunningBeforePause = false;
 
-    // 컴포넌트 초기화
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -78,14 +91,12 @@ public class player : MonoBehaviour
 
     IEnumerator Start()
     {
-        // JSON 설정이 로드될 때까지 대기
         while (GameSettingsLoader.Instance != null &&
                !GameSettingsLoader.Instance.IsLoaded)
         {
             yield return null;
         }
 
-        // JSON 설정 적용
         if (GameSettingsLoader.Instance != null &&
             GameSettingsLoader.Instance.settings != null)
         {
@@ -180,9 +191,48 @@ public class player : MonoBehaviour
         Vector3 move = new Vector3(-x, 0f, -z);
         move = Vector3.ClampMagnitude(move, 1f);
 
-        controller.Move(
-            move * moveSpeed * Time.deltaTime
-        );
+        // 마지막 이동 방향 저장
+        if (move.sqrMagnitude > 0.01f)
+        {
+            lastMoveDirection = move.normalized;
+        }
+
+        // 대쉬 재사용 대기시간
+        if (dashCooldownTimer > 0f)
+        {
+            dashCooldownTimer -= Time.deltaTime;
+        }
+
+        // Space 키로 대쉬 시작
+        if (keyboard != null &&
+            keyboard.spaceKey.wasPressedThisFrame &&
+            !isDashing &&
+            dashCooldownTimer <= 0f)
+        {
+            StartDash();
+        }
+
+        // 대쉬 중 이동
+        if (isDashing)
+        {
+            controller.Move(
+                dashDirection * dashSpeed * Time.deltaTime
+            );
+
+            dashTimer -= Time.deltaTime;
+
+            if (dashTimer <= 0f)
+            {
+                isDashing = false;
+            }
+        }
+        else
+        {
+            // 일반 이동
+            controller.Move(
+                move * moveSpeed * Time.deltaTime
+            );
+        }
 
         // 자동차 속도 증가
         speedIncreaseTimer += Time.deltaTime;
@@ -222,6 +272,19 @@ public class player : MonoBehaviour
         UpdateUI();
     }
 
+    // 대쉬 시작
+    void StartDash()
+    {
+        isDashing = true;
+
+        dashTimer = dashDuration;
+        dashCooldownTimer = dashCooldown;
+
+        dashDirection = lastMoveDirection.normalized;
+
+        Debug.Log("대쉬!");
+    }
+
     // 모바일 방향 입력
     public void SetMobileDirection(
         MobileMoveButton.MobileDirection direction,
@@ -247,7 +310,6 @@ public class player : MonoBehaviour
         }
     }
 
-    // 사운드 재생
     void PlaySound(AudioClip clip)
     {
         if (audioSource != null && clip != null)
@@ -256,7 +318,6 @@ public class player : MonoBehaviour
         }
     }
 
-    // 게임 기록 불러오기
     void LoadRecordData()
     {
         totalGames = PlayerPrefs.GetInt("TotalGames", 0);
@@ -264,7 +325,6 @@ public class player : MonoBehaviour
         lastClearLife = PlayerPrefs.GetInt("LastClearLife", 0);
     }
 
-    // 게임 기록 저장
     void SaveRecordData()
     {
         PlayerPrefs.SetInt("TotalGames", totalGames);
@@ -276,7 +336,6 @@ public class player : MonoBehaviour
         Debug.Log("게임 기록 저장 완료");
     }
 
-    // 새로운 게임 기록
     void RegisterNewGame()
     {
         if (currentRunCounted)
@@ -290,7 +349,6 @@ public class player : MonoBehaviour
         Debug.Log("총 게임 횟수: " + totalGames);
     }
 
-    // 속도 증가 알림
     void ShowSpeedUpText()
     {
         if (speedUpText == null)
@@ -316,6 +374,7 @@ public class player : MonoBehaviour
         if (!isStarted || isGameOver || isClear || other == null)
             return;
 
+        // 대쉬 중에도 기존 충돌 판정 유지
         if (other.CompareTag("Car") && !isInvincible)
         {
             PlaySound(hitSound);
@@ -371,7 +430,6 @@ public class player : MonoBehaviour
         }
     }
 
-    // 플레이어 깜빡임
     void BlinkPlayer()
     {
         if (playerRenderers == null)
@@ -387,7 +445,6 @@ public class player : MonoBehaviour
         }
     }
 
-    // 무적 상태 종료
     void ResetDamage()
     {
         isInvincible = false;
@@ -406,10 +463,11 @@ public class player : MonoBehaviour
         }
     }
 
-    // 게임 오버
     void GameOver()
     {
         isGameOver = true;
+
+        isDashing = false;
 
         PlaySound(gameOverSound);
         HideSpeedUpText();
@@ -422,13 +480,14 @@ public class player : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    // 게임 클리어
     void GameClear()
     {
         if (isClear)
             return;
 
         isClear = true;
+
+        isDashing = false;
 
         totalClears++;
         lastClearLife = life;
@@ -449,7 +508,6 @@ public class player : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    // UI 갱신
     void UpdateUI()
     {
         if (lifeText != null)
@@ -460,7 +518,6 @@ public class player : MonoBehaviour
                 Mathf.CeilToInt(timer);
     }
 
-    // 게임 시작
     public void StartGame()
     {
         PlaySound(buttonClickSound);
@@ -475,7 +532,6 @@ public class player : MonoBehaviour
             startPanel.SetActive(false);
     }
 
-    // 게임 재시작
     public void RestartGame()
     {
         PlaySound(buttonClickSound);
@@ -491,9 +547,14 @@ public class player : MonoBehaviour
         isGameOver = false;
         isClear = false;
 
+        // 대쉬 초기화
+        isDashing = false;
+        dashTimer = 0f;
+        dashCooldownTimer = 0f;
+        lastMoveDirection = Vector3.back;
+
         life = 3;
 
-        // JSON에서 제한 시간 불러오기
         if (GameSettingsLoader.Instance != null &&
             GameSettingsLoader.Instance.settings != null)
         {
@@ -532,7 +593,6 @@ public class player : MonoBehaviour
             transform.position = respawnPosition;
         }
 
-        // 플레이어 렌더러 복구
         if (playerRenderers != null)
         {
             foreach (Renderer playerRenderer in playerRenderers)
@@ -542,7 +602,7 @@ public class player : MonoBehaviour
             }
         }
 
-        // 차량 위치 초기화
+        // 좌우 차량 위치 초기화
         if (leftCars != null)
         {
             foreach (CarMoveLeft car in leftCars)
@@ -561,6 +621,25 @@ public class player : MonoBehaviour
             }
         }
 
+        // 위아래 차량 위치 초기화
+        if (upCars != null)
+        {
+            foreach (CarMoveUp car in upCars)
+            {
+                if (car != null)
+                    car.ResetCarPosition();
+            }
+        }
+
+        if (downCars != null)
+        {
+            foreach (CarMoveDown car in downCars)
+            {
+                if (car != null)
+                    car.ResetCarPosition();
+            }
+        }
+
         if (startPanel != null)
             startPanel.SetActive(false);
 
@@ -573,7 +652,6 @@ public class player : MonoBehaviour
         UpdateUI();
     }
 
-    // 앱 일시정지 및 복귀
     void OnApplicationPause(bool pauseStatus)
     {
         if (pauseStatus)
@@ -602,13 +680,11 @@ public class player : MonoBehaviour
         }
     }
 
-    // 앱 종료
     void OnApplicationQuit()
     {
         SaveRecordData();
     }
 
-    // 게임 종료 버튼
     public void QuitGame()
     {
         PlaySound(buttonClickSound);

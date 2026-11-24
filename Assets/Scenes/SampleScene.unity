@@ -925,7 +925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76bbea31d9739c748beee536c05679e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarMoveDown
-  speed: 10
+  speed: 15
   resetZ: 80
   endZ: -80
 --- !u!1 &180259833
@@ -1529,7 +1529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e83eb0ecea8a137479bbadfbbddf13bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarMoveUp
-  speed: 10
+  speed: 18
   resetZ: -80
   endZ: 80
 --- !u!54 &234111239
@@ -6529,7 +6529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76bbea31d9739c748beee536c05679e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarMoveDown
-  speed: 10
+  speed: 24
   resetZ: 80
   endZ: -80
 --- !u!54 &993245689
@@ -12045,7 +12045,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e83eb0ecea8a137479bbadfbbddf13bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarMoveUp
-  speed: 10
+  speed: 30
   resetZ: -80
   endZ: 80
 --- !u!54 &1800178774
@@ -12563,7 +12563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e83eb0ecea8a137479bbadfbbddf13bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarMoveUp
-  speed: 10
+  speed: 32
   resetZ: -80
   endZ: 80
 --- !u!54 &1874969227
@@ -13759,6 +13759,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   respawnPosition: {x: 0, y: 0, z: 0}
+  dashSpeed: 15
+  dashDuration: 0.2
+  dashCooldown: 2
   lifeText: {fileID: 1184352479}
   timerText: {fileID: 724442350}
   speedUpText: {fileID: 300472652}
@@ -13768,15 +13771,23 @@ MonoBehaviour:
   leftCars:
   - {fileID: 1111357718}
   - {fileID: 769939177}
-  - {fileID: 0}
+  - {fileID: 1308321355}
   - {fileID: 2013782832}
   - {fileID: 953480755}
   rightCars:
   - {fileID: 1320157127}
   - {fileID: 879531343}
-  - {fileID: 0}
+  - {fileID: 1330664954}
   - {fileID: 854424369}
-  - {fileID: 0}
+  - {fileID: 2004056476}
+  upCars:
+  - {fileID: 1874969226}
+  - {fileID: 1800178773}
+  - {fileID: 234111238}
+  downCars:
+  - {fileID: 150980207}
+  - {fileID: 993245688}
+  - {fileID: 873635132}
   hitEffectPrefab: {fileID: 5603544190893158186, guid: 49429f46dbe50024f978427ac4e37b45, type: 3}
   speedIncreaseInterval: 15
   speedIncreaseAmount: 0.2
