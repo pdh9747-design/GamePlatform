@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class player : MonoBehaviour
 {
     [Header("Player")]
-    public float moveSpeed = 5f;
+    public float moveSpeed = 15f;
     public Vector3 respawnPosition;
 
     [Header("Dash")]

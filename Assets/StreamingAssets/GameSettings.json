@@ -1,6 +1,6 @@
 
 {
-    "moveSpeed": 8.0,
+    "moveSpeed": 15.0,
     "gameTime": 60.0,
     "speedIncreaseInterval": 10.0,
     "speedIncreaseAmount": 0.3,

@@ -13757,7 +13757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c214dde6bcbeee14b94bc6c5eaba646d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 15
   respawnPosition: {x: 0, y: 0, z: 0}
   dashSpeed: 15
   dashDuration: 0.2
