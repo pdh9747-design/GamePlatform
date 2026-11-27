@@ -13797,6 +13797,7 @@ MonoBehaviour:
   hitSound: {fileID: 8300000, guid: b83219259c656a54587c8365dd38500e, type: 3}
   gameOverSound: {fileID: 8300000, guid: a986c3bf35ce3ac4083188d09077615a, type: 3}
   victorySound: {fileID: 8300000, guid: 67bbb4b5addc7054cbb91ccbfa76dfe6, type: 3}
+  dashSound: {fileID: 8300000, guid: 42871ee96ea6be0408fc19a00b4eeed8, type: 3}
 --- !u!4 &2049273619 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a95880aeb5a98114fb3e18fb22b18af8, type: 3}

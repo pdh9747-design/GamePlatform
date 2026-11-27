@@ -1,4 +1,3 @@
-
 using System.Collections;
 using UnityEngine;
 using TMPro;
@@ -7,7 +6,7 @@ using UnityEngine.InputSystem;
 public class player : MonoBehaviour
 {
     [Header("Player")]
-    public float moveSpeed = 15f;
+    public float moveSpeed = 5f;
     public Vector3 respawnPosition;
 
     [Header("Dash")]
@@ -50,6 +49,7 @@ public class player : MonoBehaviour
     public AudioClip hitSound;
     public AudioClip gameOverSound;
     public AudioClip victorySound;
+    public AudioClip dashSound;
 
     private CharacterController controller;
     private Renderer[] playerRenderers;
@@ -82,26 +82,24 @@ public class player : MonoBehaviour
 
         if (controller == null)
         {
-            Debug.LogError(
-                "Player에 CharacterController가 없습니다!",
-                this
-            );
+            Debug.LogError("Player에 CharacterController가 없습니다!", this);
         }
     }
 
     IEnumerator Start()
     {
+        // JSON 설정이 로드될 때까지 대기
         while (GameSettingsLoader.Instance != null &&
                !GameSettingsLoader.Instance.IsLoaded)
         {
             yield return null;
         }
 
+        // JSON 설정 적용
         if (GameSettingsLoader.Instance != null &&
             GameSettingsLoader.Instance.settings != null)
         {
-            GameSettingsData settings =
-                GameSettingsLoader.Instance.settings;
+            GameSettingsData settings = GameSettingsLoader.Instance.settings;
 
             moveSpeed = settings.moveSpeed;
             timer = settings.gameTime;
@@ -113,13 +111,10 @@ public class player : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning(
-                "GameSettingsManager가 없거나 설정 데이터가 없습니다. Inspector 기본값을 사용합니다."
-            );
+            Debug.LogWarning("게임 설정을 불러오지 못했습니다. Inspector 기본값을 사용합니다.");
         }
 
         respawnPosition = transform.position;
-
         LoadRecordData();
 
         CarMoveLeft.speedMultiplier = 1f;
@@ -127,25 +122,16 @@ public class player : MonoBehaviour
 
         Time.timeScale = 0f;
 
-        if (startPanel != null)
-            startPanel.SetActive(true);
-
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(false);
-
-        if (gameClearPanel != null)
-            gameClearPanel.SetActive(false);
-
-        if (speedUpText != null)
-            speedUpText.gameObject.SetActive(false);
+        if (startPanel != null) startPanel.SetActive(true);
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (gameClearPanel != null) gameClearPanel.SetActive(false);
+        if (speedUpText != null) speedUpText.gameObject.SetActive(false);
 
         UpdateUI();
 
-        Debug.Log(
-            "저장된 게임 기록 - 총 게임: " + totalGames +
-            " / 총 클리어: " + totalClears +
-            " / 마지막 클리어 남은 목숨: " + lastClearLife
-        );
+        Debug.Log("저장된 게임 기록 - 총 게임: " + totalGames +
+                  " / 총 클리어: " + totalClears +
+                  " / 마지막 클리어 남은 목숨: " + lastClearLife);
     }
 
     void Update()
@@ -163,47 +149,33 @@ public class player : MonoBehaviour
 
         if (keyboard != null)
         {
-            if (keyboard.aKey.isPressed)
-                x -= 1f;
-
-            if (keyboard.dKey.isPressed)
-                x += 1f;
-
-            if (keyboard.wKey.isPressed)
-                z += 1f;
-
-            if (keyboard.sKey.isPressed)
-                z -= 1f;
+            if (keyboard.aKey.isPressed) x -= 1f;
+            if (keyboard.dKey.isPressed) x += 1f;
+            if (keyboard.wKey.isPressed) z += 1f;
+            if (keyboard.sKey.isPressed) z -= 1f;
         }
 
-        if (mobileLeft)
-            x -= 1f;
-
-        if (mobileRight)
-            x += 1f;
-
-        if (mobileUp)
-            z += 1f;
-
-        if (mobileDown)
-            z -= 1f;
+        if (mobileLeft) x -= 1f;
+        if (mobileRight) x += 1f;
+        if (mobileUp) z += 1f;
+        if (mobileDown) z -= 1f;
 
         Vector3 move = new Vector3(-x, 0f, -z);
         move = Vector3.ClampMagnitude(move, 1f);
 
         // 마지막 이동 방향 저장
-        if (move.sqrMagnitude > 0.01f)
+        if (move.sqrMagnitude > 0.001f)
         {
             lastMoveDirection = move.normalized;
         }
 
-        // 대쉬 재사용 대기시간
+        // 대시 재사용 대기시간
         if (dashCooldownTimer > 0f)
         {
             dashCooldownTimer -= Time.deltaTime;
         }
 
-        // Space 키로 대쉬 시작
+        // 스페이스바로 대시 시작
         if (keyboard != null &&
             keyboard.spaceKey.wasPressedThisFrame &&
             !isDashing &&
@@ -212,12 +184,10 @@ public class player : MonoBehaviour
             StartDash();
         }
 
-        // 대쉬 중 이동
+        // 대시 이동
         if (isDashing)
         {
-            controller.Move(
-                dashDirection * dashSpeed * Time.deltaTime
-            );
+            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
 
             dashTimer -= Time.deltaTime;
 
@@ -229,9 +199,7 @@ public class player : MonoBehaviour
         else
         {
             // 일반 이동
-            controller.Move(
-                move * moveSpeed * Time.deltaTime
-            );
+            controller.Move(move * moveSpeed * Time.deltaTime);
         }
 
         // 자동차 속도 증가
@@ -248,13 +216,11 @@ public class player : MonoBehaviour
 
             CarMoveLeft.speedMultiplier = Mathf.Min(
                 CarMoveLeft.speedMultiplier + speedIncreaseAmount,
-                maxSpeedMultiplier
-            );
+                maxSpeedMultiplier);
 
             CarMoveRight.speedMultiplier = Mathf.Min(
                 CarMoveRight.speedMultiplier + speedIncreaseAmount,
-                maxSpeedMultiplier
-            );
+                maxSpeedMultiplier);
 
             if (canIncreaseSpeed)
                 ShowSpeedUpText();
@@ -272,20 +238,18 @@ public class player : MonoBehaviour
         UpdateUI();
     }
 
-    // 대쉬 시작
+    // 대시 시작
     void StartDash()
     {
         isDashing = true;
-
         dashTimer = dashDuration;
         dashCooldownTimer = dashCooldown;
-
         dashDirection = lastMoveDirection.normalized;
 
-        Debug.Log("대쉬!");
+        // 대시 효과음 재생
+        PlaySound(dashSound);
     }
 
-    // 모바일 방향 입력
     public void SetMobileDirection(
         MobileMoveButton.MobileDirection direction,
         bool pressed)
@@ -313,9 +277,7 @@ public class player : MonoBehaviour
     void PlaySound(AudioClip clip)
     {
         if (audioSource != null && clip != null)
-        {
             audioSource.PlayOneShot(clip);
-        }
     }
 
     void LoadRecordData()
@@ -330,7 +292,6 @@ public class player : MonoBehaviour
         PlayerPrefs.SetInt("TotalGames", totalGames);
         PlayerPrefs.SetInt("TotalClears", totalClears);
         PlayerPrefs.SetInt("LastClearLife", lastClearLife);
-
         PlayerPrefs.Save();
 
         Debug.Log("게임 기록 저장 완료");
@@ -343,7 +304,6 @@ public class player : MonoBehaviour
 
         totalGames++;
         currentRunCounted = true;
-
         SaveRecordData();
 
         Debug.Log("총 게임 횟수: " + totalGames);
@@ -355,7 +315,6 @@ public class player : MonoBehaviour
             return;
 
         speedUpText.gameObject.SetActive(true);
-
         CancelInvoke(nameof(HideSpeedUpText));
         Invoke(nameof(HideSpeedUpText), 2f);
     }
@@ -363,18 +322,14 @@ public class player : MonoBehaviour
     void HideSpeedUpText()
     {
         if (speedUpText != null)
-        {
             speedUpText.gameObject.SetActive(false);
-        }
     }
 
-    // 차량 충돌 감지
     void OnTriggerEnter(Collider other)
     {
         if (!isStarted || isGameOver || isClear || other == null)
             return;
 
-        // 대쉬 중에도 기존 충돌 판정 유지
         if (other.CompareTag("Car") && !isInvincible)
         {
             PlaySound(hitSound);
@@ -384,21 +339,14 @@ public class player : MonoBehaviour
                 GameObject effect = Instantiate(
                     hitEffectPrefab,
                     transform.position + Vector3.up,
-                    Quaternion.identity
-                );
+                    Quaternion.identity);
 
-                ParticleSystem ps =
-                    effect.GetComponentInChildren<ParticleSystem>();
+                ParticleSystem ps = effect.GetComponentInChildren<ParticleSystem>();
 
                 if (ps != null)
                 {
                     var main = ps.main;
-
-                    Destroy(
-                        effect,
-                        main.duration +
-                        main.startLifetime.constantMax
-                    );
+                    Destroy(effect, main.duration + main.startLifetime.constantMax);
                 }
                 else
                 {
@@ -407,22 +355,15 @@ public class player : MonoBehaviour
             }
 
             life--;
-
             UpdateUI();
 
             Debug.Log("목숨 감소! 남은 목숨: " + life);
 
             isInvincible = true;
-
             CancelInvoke(nameof(ResetDamage));
             CancelInvoke(nameof(BlinkPlayer));
 
-            InvokeRepeating(
-                nameof(BlinkPlayer),
-                0f,
-                0.2f
-            );
-
+            InvokeRepeating(nameof(BlinkPlayer), 0f, 0.2f);
             Invoke(nameof(ResetDamage), 3f);
 
             if (life <= 0)
@@ -438,17 +379,13 @@ public class player : MonoBehaviour
         foreach (Renderer playerRenderer in playerRenderers)
         {
             if (playerRenderer != null)
-            {
-                playerRenderer.enabled =
-                    !playerRenderer.enabled;
-            }
+                playerRenderer.enabled = !playerRenderer.enabled;
         }
     }
 
     void ResetDamage()
     {
         isInvincible = false;
-
         CancelInvoke(nameof(BlinkPlayer));
 
         if (playerRenderers == null)
@@ -457,18 +394,13 @@ public class player : MonoBehaviour
         foreach (Renderer playerRenderer in playerRenderers)
         {
             if (playerRenderer != null)
-            {
                 playerRenderer.enabled = true;
-            }
         }
     }
 
     void GameOver()
     {
         isGameOver = true;
-
-        isDashing = false;
-
         PlaySound(gameOverSound);
         HideSpeedUpText();
 
@@ -476,7 +408,6 @@ public class player : MonoBehaviour
             gameOverPanel.SetActive(true);
 
         SaveRecordData();
-
         Time.timeScale = 0f;
     }
 
@@ -486,14 +417,10 @@ public class player : MonoBehaviour
             return;
 
         isClear = true;
-
-        isDashing = false;
-
         totalClears++;
         lastClearLife = life;
 
         SaveRecordData();
-
         PlaySound(victorySound);
 
         Debug.Log("게임 클리어!");
@@ -514,18 +441,15 @@ public class player : MonoBehaviour
             lifeText.text = "Life : " + life;
 
         if (timerText != null)
-            timerText.text = "Time : " +
-                Mathf.CeilToInt(timer);
+            timerText.text = "Time : " + Mathf.CeilToInt(timer);
     }
 
     public void StartGame()
     {
         PlaySound(buttonClickSound);
-
         RegisterNewGame();
 
         isStarted = true;
-
         Time.timeScale = 1f;
 
         if (startPanel != null)
@@ -535,7 +459,6 @@ public class player : MonoBehaviour
     public void RestartGame()
     {
         PlaySound(buttonClickSound);
-
         Time.timeScale = 1f;
 
         CancelInvoke(nameof(ResetDamage));
@@ -546,20 +469,19 @@ public class player : MonoBehaviour
         isInvincible = false;
         isGameOver = false;
         isClear = false;
+        life = 3;
 
-        // 대쉬 초기화
+        // 대시 상태 초기화
         isDashing = false;
         dashTimer = 0f;
         dashCooldownTimer = 0f;
         lastMoveDirection = Vector3.back;
 
-        life = 3;
-
+        // JSON에서 제한 시간 불러오기
         if (GameSettingsLoader.Instance != null &&
             GameSettingsLoader.Instance.settings != null)
         {
-            timer =
-                GameSettingsLoader.Instance.settings.gameTime;
+            timer = GameSettingsLoader.Instance.settings.gameTime;
         }
         else
         {
@@ -567,7 +489,6 @@ public class player : MonoBehaviour
         }
 
         speedIncreaseTimer = 0f;
-
         currentRunCounted = false;
         RegisterNewGame();
 
@@ -593,6 +514,7 @@ public class player : MonoBehaviour
             transform.position = respawnPosition;
         }
 
+        // 플레이어 렌더러 복구
         if (playerRenderers != null)
         {
             foreach (Renderer playerRenderer in playerRenderers)
@@ -602,7 +524,7 @@ public class player : MonoBehaviour
             }
         }
 
-        // 좌우 차량 위치 초기화
+        // 차량 위치 초기화
         if (leftCars != null)
         {
             foreach (CarMoveLeft car in leftCars)
@@ -621,7 +543,6 @@ public class player : MonoBehaviour
             }
         }
 
-        // 위아래 차량 위치 초기화
         if (upCars != null)
         {
             foreach (CarMoveUp car in upCars)
@@ -640,14 +561,9 @@ public class player : MonoBehaviour
             }
         }
 
-        if (startPanel != null)
-            startPanel.SetActive(false);
-
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(false);
-
-        if (gameClearPanel != null)
-            gameClearPanel.SetActive(false);
+        if (startPanel != null) startPanel.SetActive(false);
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (gameClearPanel != null) gameClearPanel.SetActive(false);
 
         UpdateUI();
     }
@@ -657,16 +573,12 @@ public class player : MonoBehaviour
         if (pauseStatus)
         {
             wasRunningBeforePause =
-                isStarted &&
-                !isGameOver &&
-                !isClear &&
-                Time.timeScale > 0f;
+                isStarted && !isGameOver && !isClear && Time.timeScale > 0f;
 
             if (wasRunningBeforePause)
                 Time.timeScale = 0f;
 
             SaveRecordData();
-
             Debug.Log("앱 일시정지 - 게임 기록 저장");
         }
         else
@@ -675,7 +587,6 @@ public class player : MonoBehaviour
                 Time.timeScale = 1f;
 
             wasRunningBeforePause = false;
-
             Debug.Log("앱 복귀");
         }
     }
@@ -688,9 +599,7 @@ public class player : MonoBehaviour
     public void QuitGame()
     {
         PlaySound(buttonClickSound);
-
         SaveRecordData();
-
         Application.Quit();
     }
 }
